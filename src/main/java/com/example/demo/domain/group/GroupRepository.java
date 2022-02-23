@@ -7,4 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group, UUID> {
+    Group findByGroupname (String groupname);
 }
