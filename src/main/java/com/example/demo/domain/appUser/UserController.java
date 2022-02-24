@@ -21,7 +21,8 @@ private final UserService userService;
         return ResponseEntity.ok().body("Hello World");
     }
 
-
+    //@Operation
+    //@Valid
     @GetMapping("/users")
     public ResponseEntity<Collection<User>> findAll() {
         return new ResponseEntity<Collection<User>>(userService.findAll(), HttpStatus.OK);
