@@ -1,29 +1,30 @@
 package com.example.demo.domain.group;
 
 
+import com.example.demo.DtoConverter;
 import com.example.demo.domain.group.dto.MembersOfGroupDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/groups")
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
-    private final ModelMapper modelMapper;
 
     @GetMapping("/")
     public ResponseEntity<Collection<Group>> findAll() {
-        return new ResponseEntity<Collection<Group>>(groupService.findAll(), HttpStatus.FOUND);
+        return new ResponseEntity<>(groupService.findAll(), HttpStatus.FOUND);
     }
 
     @GetMapping("/{id}")
@@ -32,34 +33,23 @@ public class GroupController {
         return groupService.findById(id);
     }
 
-    @GetMapping("/membersOf/{groupname}")
-    public MembersOfGroupDTO getMembersOf(@PathVariable("groupname") String groupname) {
-        Group tempgroup = groupService.findMembersByGroupname(groupname);
-        return convertToDto(tempgroup);
-    }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     @SneakyThrows
     public Group addGroup(@RequestBody Group group) {
         return groupService.saveGroup(group);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @SneakyThrows
     public void updateGroup(@PathVariable("id") UUID id, @RequestBody Group group) {
         groupService.updateGroup(id, group);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteGroup(@PathVariable("id") UUID id) {
         groupService.deleteGroup(id);
     }
 
-    private MembersOfGroupDTO convertToDto(Group group) {
-        MembersOfGroupDTO membersOfGroupDTO = modelMapper.map(group, MembersOfGroupDTO.class);
-        membersOfGroupDTO.setId(group.getId());
-        membersOfGroupDTO.setGroupname(group.getGroupname());
-        membersOfGroupDTO.setMembers(group.getUsers());
-        return membersOfGroupDTO;
-    }
+
 }
