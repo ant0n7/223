@@ -3,6 +3,8 @@ package com.example.demo.domain.group;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -16,7 +18,6 @@ import java.util.UUID;
 @Transactional
 public class GroupServiceImpl implements GroupService {
 
-    @Autowired
     private final GroupRepository groupRepository;
 
     @Override
@@ -27,10 +28,6 @@ public class GroupServiceImpl implements GroupService {
         return groupRepository.findById(id);
     }
 
-    @Override
-    public Group findMembersByGroupname(String groupname){
-        return groupRepository.findByGroupname(groupname);
-    }
 
     @Override
     @SneakyThrows
@@ -45,16 +42,6 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void updateGroup(UUID id, Group newGroup) {
-//        Group group = groupRepository.getById(id);
-//        if(newGroup.getId().equals("")) {
-//            group.setId(id);
-//        } else {
-//            group.setId(newGroup.getId());
-//        }
-//        group.setGroupname(newGroup.getGroupname());
-//        group.setMotto(newGroup.getMotto());
-//        group.setUsers(newGroup.getUsers());
-
         newGroup.setId(id);
         groupRepository.save(newGroup);
     }

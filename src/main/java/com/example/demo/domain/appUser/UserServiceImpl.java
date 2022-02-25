@@ -1,10 +1,14 @@
 package com.example.demo.domain.appUser;
 
+import com.example.demo.DtoConverter;
+import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.group.GroupRepository;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +26,10 @@ import java.util.*;
 @Service @RequiredArgsConstructor @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final RoleRepository roleRepository;
-    @Autowired
+    private final GroupRepository groupRepository;
+    private final DtoConverter dtoConverter;
     private PasswordEncoder passwordEncoder;
 
 
@@ -101,6 +104,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         else {
             throw new InstanceNotFoundException("User not found");
+        }
+    }
+
+    @Override
+    public List<UserSmallDetailsDTO> getUsersOfGroup(String groupname, Pageable pageable) throws InstanceNotFoundException {
+        Set<User> userSet = userRepository.findUsersByGroupname(groupname, pageable).toSet();
+
+        if (!userSet.isEmpty()) {
+            List<UserSmallDetailsDTO> users = new ArrayList<>();
+            Set<UserSmallDetailsDTO> userSmallSet = dtoConverter.convertUserToMembers(userSet);
+            users.addAll(userSmallSet);
+            return users;
+        } else {
+            throw new InstanceNotFoundException("Group {" + groupname + "} does not exist");
         }
     }
 
