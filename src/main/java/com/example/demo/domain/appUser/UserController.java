@@ -26,7 +26,7 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "List of all users")
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<Collection<User>> findAll() {
         return new ResponseEntity<Collection<User>>(userService.findAll(), HttpStatus.OK);
     }
