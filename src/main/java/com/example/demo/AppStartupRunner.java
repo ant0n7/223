@@ -58,9 +58,9 @@ public class AppStartupRunner implements ApplicationRunner {
         groupService.saveGroup(default_group);
 
         userService.saveUser(new User(null, "anton", "admin@antondetken.ch", "anton", Set.of(default_role)));
-        userService.saveUser(new User(null, "remo", "admin@mail.com", "remo", Set.of(default_role)));
-        userService.saveUser(new User(null, "andrin", "admin@mail.com", "andrin", Set.of(default_role)));
-        userService.saveUser(new User(null, "creeper123", "admin@mail.com", "minecraft", Set.of(default_role)));
+        userService.saveUser(new User(null, "remo", "remo@mail.com", "remo", Set.of(default_role)));
+        userService.saveUser(new User(null, "andrin", "andrin@minecraft.com", "andrin", Set.of(default_role)));
+        userService.saveUser(new User(null, "creeper123", "xxcreeper@mail.com", "minecraft", Set.of(default_role)));
 
         groupService.saveGroup(new Group(null, "Fortnite", "Ninja", Set.of(default_user)));
 
