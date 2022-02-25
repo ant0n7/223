@@ -1,6 +1,8 @@
 package com.example.demo.domain.group;
 
 import com.example.demo.domain.group.dto.MembersOfGroupDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.management.InstanceAlreadyExistsException;
 import java.util.List;
@@ -13,5 +15,4 @@ public interface GroupService {
     Optional<Group> findById(UUID id) throws InstanceAlreadyExistsException;
     void deleteGroup(UUID id);
     void updateGroup(UUID id, Group group);
-    Group findMembersByGroupname(String groupname);
 }

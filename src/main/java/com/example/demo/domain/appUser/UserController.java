@@ -1,10 +1,13 @@
 package com.example.demo.domain.appUser;
 
 
+import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.role.Role;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,6 +49,13 @@ public class UserController {
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
         return new ResponseEntity<User>(userService.getUser(username), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get all users of a specific group")
+    @GetMapping("/groups/{groupname}")
+    public ResponseEntity<Collection<UserSmallDetailsDTO>> getUsersOfGroup(@PathVariable String groupname) throws InstanceNotFoundException {
+        Pageable pageable = PageRequest.of(0, 3);
+        return new ResponseEntity<>(userService.getUsersOfGroup(groupname, pageable), HttpStatus.FOUND);
     }
 
     @Operation(summary = "Get an user by ID")
