@@ -1,6 +1,7 @@
 package com.example.demo.domain.appUser;
 
 import com.example.demo.domain.role.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
