@@ -15,7 +15,9 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
     User findByUsername (String username);
-
+    
     @Query(value = "select u.* from tbl_group_users gu JOIN tbl_group tg on gu.tbl_group_id = tg.id join users u on u.id = gu.users_id where groupname = :groupname", nativeQuery = true)
     Page<User> findUsersByGroupname(@Param("groupname") String groupname, Pageable pageable);
+    
+    User findByEmail(String email);
 }

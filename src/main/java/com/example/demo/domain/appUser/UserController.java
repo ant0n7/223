@@ -2,6 +2,7 @@ package com.example.demo.domain.appUser;
 
 
 import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +36,14 @@ public class UserController {
 
     @Operation(summary = "Persist a single user")
     @PostMapping("/")
-    public ResponseEntity<User> save(@RequestBody User user) throws InstanceAlreadyExistsException {
-        return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.OK);
+    public ResponseEntity<User> save(@RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+        return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Persist a single role")
     @PostMapping("/role")
     public ResponseEntity<Role> save(@RequestBody Role role) {
-        return new ResponseEntity<Role>(userService.saveRole(role), HttpStatus.OK);
+        return new ResponseEntity<Role>(userService.saveRole(role), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get an user by username")
@@ -83,5 +84,10 @@ public class UserController {
     @ExceptionHandler(InstanceAlreadyExistsException.class)
     public ResponseEntity<String> handleInstanceAlreadyExistsException(InstanceAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<String> handleInvalidEmailException(InvalidEmailException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
