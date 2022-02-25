@@ -1,5 +1,6 @@
 package com.example.demo.domain.appUser;
 
+import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -24,6 +26,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     @Autowired
     private final RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -63,13 +67,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) throws InstanceAlreadyExistsException{
-        if (userRepository.findByUsername(user.getUsername()) != null){
-            throw new InstanceAlreadyExistsException("User already exists");
+    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+        if (userRepository.findByUsername(user.getUsername()) != null || userRepository.findByEmail(user.getEmail()) != null){
+            throw new InstanceAlreadyExistsException("Username or Email already exists");
         }
-        else {
-            return userRepository.save(user);
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new InvalidEmailException("Email is invalid");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
@@ -93,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.existsById(id)){
             return userRepository.findById(id);
         }
-        else{
+        else {
             throw new InstanceNotFoundException("User not found");
         }
     }
