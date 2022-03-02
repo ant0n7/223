@@ -5,8 +5,6 @@ import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
-import javax.naming.Name;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.UUID;
@@ -61,7 +58,7 @@ public class UserController {
     @Operation(summary = "Get an user by ID.", description = "Receive a single user with all available Information by its UUID.")
     @GetMapping("/byId/{id}")
     public ResponseEntity<User> getById(@Parameter(description = "UUID of the user requested") @PathVariable UUID id) throws InstanceNotFoundException {
-        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findById(id).orElse(null), HttpStatus.OK);
     }
 
     @Operation(summary = "Add a role to a user.", description = "Add a single role to a single user. There won't be any loss of roles as it just adds a role and replaces any roles.")
