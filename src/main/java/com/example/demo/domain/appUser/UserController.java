@@ -38,7 +38,7 @@ public class UserController {
 
     @Operation(summary = "Save a single role.", description = "Save a single role to the database. The API automatically generates an UUID.")
     @PostMapping("/role")
-    public ResponseEntity<Role> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Single Role object") @RequestBody Role role) { // TODO(ant0n7): @Valid annotation
+    public ResponseEntity<Role> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Single Role object") @Valid @RequestBody Role role) {
         return new ResponseEntity<>(userService.saveRole(role), HttpStatus.CREATED);
     }
 
