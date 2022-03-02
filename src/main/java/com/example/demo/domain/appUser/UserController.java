@@ -21,7 +21,6 @@ import java.util.UUID;
 @RestController @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-    //    ADD YOUR ENDPOINT MAPPINGS HERE
     private final UserService userService;
 
     @Operation(summary = "List of all users")
