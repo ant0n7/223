@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
      private final DaoAuthenticationProvider authProvider;
 
      @Override
-     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+     protected void configure(AuthenticationManagerBuilder auth) {
          auth.authenticationProvider(authProvider);
 //         auth.userDetailsService(userDetailsService);
      }
