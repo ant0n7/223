@@ -37,38 +37,6 @@ public class AppStartupRunner implements ApplicationRunner {
     private final GroupRepository groupRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-//        RUN YOUR STARTUP CODE HERE
-//        e.g. to add a user or role to the DB (only for testing)
-
-//        Authorities
-        Authority read_auth=new Authority(null,"READ");
-        Authority post_auth=new Authority(null,"CREATE");
-        authorityRepository.save(read_auth);
-        authorityRepository.save(post_auth);
-
-//        Roles
-        Role default_role = new Role(null, "DEFAULT",Arrays.asList(read_auth, post_auth));
-        roleRepository.save(default_role);
-
-        User default_user = new User(null, "james","james.bond@mi6.com","bond", Set.of(default_role));
-        userService.saveUser(default_user);
-
-        Group default_group = new Group(null, "Minecraft", "I love diamonds", null);
-        groupService.saveGroup(default_group);
-
-        userService.saveUser(new User(null, "anton", "admin@antondetken.ch", "anton", Set.of(default_role)));
-        userService.saveUser(new User(null, "remo", "remo@mail.com", "remo", Set.of(default_role)));
-        userService.saveUser(new User(null, "andrin", "andrin@minecraft.com", "andrin", Set.of(default_role)));
-        userService.saveUser(new User(null, "creeper123", "xxcreeper@mail.com", "minecraft", Set.of(default_role)));
-
-        groupService.saveGroup(new Group(null, "Fortnite", "Ninja", Set.of(default_user)));
-
-        userService.addRoleToUser(default_user.getUsername(), default_role.getName());
-        userService.addRoleToUser("anton", default_role.getName());
-        userService.addRoleToUser("remo", default_role.getName());
-        userService.addRoleToUser("andrin", default_role.getName());
-        userService.addRoleToUser("creeper123", default_role.getName());
-    }
+    public void run(ApplicationArguments args)  {}
 }
 

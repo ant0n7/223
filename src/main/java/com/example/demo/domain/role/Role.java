@@ -2,6 +2,7 @@ package com.example.demo.domain.role;
 
 import com.example.demo.domain.appUser.User;
 import com.example.demo.domain.authority.Authority;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Role {
     @Column(nullable = false)
     private String name;
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(
