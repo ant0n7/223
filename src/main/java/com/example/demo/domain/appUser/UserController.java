@@ -32,6 +32,7 @@ public class UserController {
 
     @Operation(summary = "Persist a single user")
     @PostMapping("/")
+    public ResponseEntity<User> save(@RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
     public ResponseEntity<User> save(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }

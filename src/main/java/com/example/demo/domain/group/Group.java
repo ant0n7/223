@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +20,10 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @NotNull (message = "groupname is mandatory")
     private String groupname;
+
     private String motto;
 
     @OneToMany(fetch = FetchType.EAGER)

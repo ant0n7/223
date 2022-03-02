@@ -2,12 +2,9 @@ package com.example.demo.domain.group;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -17,17 +14,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class GroupServiceImpl implements GroupService {
-
     private final GroupRepository groupRepository;
 
     @Override
     public List<Group> findAll() {return groupRepository.findAll();}
 
     @Override
-    public Optional<Group> findById(UUID id) {
-        return groupRepository.findById(id);
+    public Optional<Group> findById(UUID id) throws InstanceNotFoundException {
+        if(groupRepository.existsById(id)) {
+            return groupRepository.findById(id);
+        } else {
+            throw new InstanceNotFoundException("Group matching {id:\"" + id + "\"} does not exist");
+        }
     }
-
 
     @Override
     @SneakyThrows
@@ -41,13 +40,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void updateGroup(UUID id, Group newGroup) {
-        newGroup.setId(id);
-        groupRepository.save(newGroup);
+    public Group updateGroup(UUID id, Group newGroup) throws InstanceNotFoundException {
+        if(groupRepository.existsById(id)) {
+            newGroup.setId(id);
+            return groupRepository.save(newGroup);
+        } else {
+            throw new InstanceNotFoundException("Group matching {id:\"" + id + "\"} does not exist");
+        }
     }
 
     @Override
-    public void deleteGroup(UUID id) {
-        groupRepository.deleteById(id);
+    public void deleteGroup(UUID id) throws InstanceNotFoundException {
+        if(groupRepository.existsById(id)) {
+            groupRepository.deleteById(id);
+        } else {
+            throw new InstanceNotFoundException("Group matching {id:\"" + id + "\"} does not exist");
+        }
     }
 }
