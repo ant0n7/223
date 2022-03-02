@@ -1,10 +1,12 @@
 package com.example.demo.domain.group;
 
+import com.example.demo.domain.security.SecurityService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
+    @Autowired
+    private final SecurityService securityService;
 
     @Operation(summary = "Get all Groups")
     @GetMapping("/")
@@ -25,24 +29,28 @@ public class GroupController {
         return new ResponseEntity<>(groupService.findAll(), HttpStatus.FOUND);
     }
 
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
     @Operation(summary = "Get a group by ID")
     @GetMapping("/{id}")
     public ResponseEntity<Group> getGroupById(@PathVariable("id") UUID id) throws InstanceAlreadyExistsException, InstanceNotFoundException {
         return new ResponseEntity<>(groupService.findById(id).get(), HttpStatus.FOUND);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add a group")
     @PostMapping("/")
     public ResponseEntity<Group> addGroup(@RequestBody @Valid Group group) throws InstanceAlreadyExistsException {
         return new ResponseEntity<>(groupService.saveGroup(group), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
     @Operation(summary = "update a group by id")
     @PutMapping("/{id}")
     public ResponseEntity<Group> updateGroup(@PathVariable("id") UUID id, @RequestBody @Valid Group group) throws InstanceNotFoundException {
         return new ResponseEntity<>(groupService.updateGroup(id, group), HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
     @Operation(summary = "delete a group by id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Group> deleteGroup(@PathVariable("id") UUID id) throws InstanceNotFoundException {

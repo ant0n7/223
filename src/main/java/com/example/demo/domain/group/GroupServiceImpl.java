@@ -21,10 +21,11 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Optional<Group> findById(UUID id) throws InstanceNotFoundException {
-        if(groupRepository.existsById(id)) {
-            return groupRepository.findById(id);
+        UUID groupID = id;
+        if(groupRepository.existsById(groupID)) {
+            return groupRepository.findById(groupID);
         } else {
-            throw new InstanceNotFoundException("Group matching {id:\"" + id + "\"} does not exist");
+            throw new InstanceNotFoundException("Group matching {id:\"" + groupID + "\"} does not exist");
         }
     }
 
@@ -51,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteGroup(UUID id) throws InstanceNotFoundException {
-        if(groupRepository.existsById(id)) {
+        if(groupRepository.existsById(id) && groupRepository.findById(id).isPresent()) {
             groupRepository.deleteById(id);
         } else {
             throw new InstanceNotFoundException("Group matching {id:\"" + id + "\"} does not exist");
