@@ -1,12 +1,12 @@
 package com.example.demo.domain.role;
 
-import com.example.demo.domain.appUser.User;
 import com.example.demo.domain.authority.Authority;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,9 +17,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Size(min = 3, max = 16)
+    @NotNull
     @Column(nullable = false)
     private String name;
 
