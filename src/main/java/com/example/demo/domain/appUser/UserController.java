@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "List of all users")
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<Collection<User>> findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
@@ -32,12 +33,13 @@ public class UserController {
     @Operation(summary = "Persist a single user")
     @PostMapping("/")
     public ResponseEntity<User> save(@RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public ResponseEntity<User> save(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Persist a single role")
     @PostMapping("/role")
-    public ResponseEntity<Role> save(@RequestBody Role role) {
+    public ResponseEntity<Role> save(@RequestBody Role role) { // TODO(ant0n7): @Valid annotation
         return new ResponseEntity<>(userService.saveRole(role), HttpStatus.CREATED);
     }
 
