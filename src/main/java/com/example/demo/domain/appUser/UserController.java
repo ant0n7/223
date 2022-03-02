@@ -4,16 +4,11 @@ package com.example.demo.domain.appUser;
 import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -31,25 +26,25 @@ public class UserController {
     @Operation(summary = "List of all users")
     @GetMapping("/all")
     public ResponseEntity<Collection<User>> findAll() {
-        return new ResponseEntity<Collection<User>>(userService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @Operation(summary = "Persist a single user")
     @PostMapping("/")
     public ResponseEntity<User> save(@RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Persist a single role")
     @PostMapping("/role")
     public ResponseEntity<Role> save(@RequestBody Role role) {
-        return new ResponseEntity<Role>(userService.saveRole(role), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.saveRole(role), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get an user by username")
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
-        return new ResponseEntity<User>(userService.getUser(username), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUser(username), HttpStatus.OK);
     }
 
     @Operation(summary = "Get all users of a specific group")
@@ -62,7 +57,7 @@ public class UserController {
     @Operation(summary = "Get an user by ID")
     @GetMapping("/byId/{id}")
     public ResponseEntity<User> getById(@PathVariable UUID id) throws InstanceNotFoundException {
-        return new ResponseEntity<User>(userService.findById(id).get(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
     }
 
     @Operation(summary = "Add a role to a user")

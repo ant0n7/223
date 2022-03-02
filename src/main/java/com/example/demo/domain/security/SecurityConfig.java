@@ -24,7 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
      @Override
      protected void configure(AuthenticationManagerBuilder auth) throws Exception {
          auth.authenticationProvider(authProvider);
-//         auth.userDetailsService(userDetailsService);
      }
 
      @Autowired
@@ -40,8 +39,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
          http.httpBasic().and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
-                .antMatchers("/api/blog-post/getAll").permitAll()
-                .antMatchers("/**").hasRole("DEFAULT")
+                .antMatchers("/**").hasRole("ADMIN")
                 .and()
                 // some more method calls
                 .formLogin()
