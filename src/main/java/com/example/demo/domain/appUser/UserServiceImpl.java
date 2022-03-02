@@ -1,14 +1,20 @@
 package com.example.demo.domain.appUser;
 
+import com.example.demo.DtoConverter;
+import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.group.GroupRepository;
+import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -20,10 +26,11 @@ import java.util.*;
 @Service @RequiredArgsConstructor @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final RoleRepository roleRepository;
+    private final GroupRepository groupRepository;
+    private final DtoConverter dtoConverter;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -40,9 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getName()));
-                role.getAuthorities().forEach(authority -> {
-                    authorities.add(new SimpleGrantedAuthority(authority.getName()));
-                });
+                role.getAuthorities().forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
             });
 //            return a spring internal user object that contains authorities and roles
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
@@ -63,13 +68,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) throws InstanceAlreadyExistsException{
-        if (userRepository.findByUsername(user.getUsername()) != null){
-            throw new InstanceAlreadyExistsException("User already exists");
+    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+        if (userRepository.findByUsername(user.getUsername()) != null || userRepository.findByEmail(user.getEmail()) != null){
+            throw new InstanceAlreadyExistsException("Username or Email already exists");
         }
-        else {
-            return userRepository.save(user);
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new InvalidEmailException("Email is invalid");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
@@ -93,8 +100,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.existsById(id)){
             return userRepository.findById(id);
         }
-        else{
+        else {
             throw new InstanceNotFoundException("User not found");
+        }
+    }
+
+    @Override
+    public List<UserSmallDetailsDTO> getUsersOfGroup(String groupname, Pageable pageable) throws InstanceNotFoundException {
+        Set<User> userSet = userRepository.findUsersByGroupname(groupname, pageable).toSet();
+
+        if (!userSet.isEmpty()) {
+            List<UserSmallDetailsDTO> users = new ArrayList<>();
+            Set<UserSmallDetailsDTO> userSmallSet = dtoConverter.convertUserToMembers(userSet);
+            users.addAll(userSmallSet);
+            return users;
+        } else {
+            throw new InstanceNotFoundException("Group {" + groupname + "} does not exist");
         }
     }
 

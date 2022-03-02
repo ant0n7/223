@@ -1,65 +1,67 @@
 package com.example.demo.domain.group;
 
-
-import com.example.demo.domain.group.dto.MembersOfGroupDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/groups")
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
-    private final ModelMapper modelMapper;
 
+    @Operation(summary = "Get all Groups")
     @GetMapping("/")
     public ResponseEntity<Collection<Group>> findAll() {
-        return new ResponseEntity<Collection<Group>>(groupService.findAll(), HttpStatus.FOUND);
+        return new ResponseEntity<>(groupService.findAll(), HttpStatus.FOUND);
     }
 
+    @Operation(summary = "Get a group by ID")
     @GetMapping("/{id}")
-    @SneakyThrows
-    public Optional<Group> getGroupById(@PathVariable("id") UUID id) {
-        return groupService.findById(id);
+    public ResponseEntity<Group> getGroupById(@PathVariable("id") UUID id) throws InstanceAlreadyExistsException, InstanceNotFoundException {
+        return new ResponseEntity<>(groupService.findById(id).get(), HttpStatus.FOUND);
     }
 
-    @GetMapping("/membersOf/{groupname}")
-    public MembersOfGroupDTO getMembersOf(@PathVariable("groupname") String groupname) {
-        Group tempgroup = groupService.findMembersByGroupname(groupname);
-        return convertToDto(tempgroup);
+    @Operation(summary = "Add a group")
+    @PostMapping("/")
+    public ResponseEntity<Group> addGroup(@RequestBody @Valid Group group) throws InstanceAlreadyExistsException {
+        return new ResponseEntity<>(groupService.saveGroup(group), HttpStatus.CREATED);
     }
 
-    @PostMapping("/add")
-    @SneakyThrows
-    public Group addGroup(@RequestBody Group group) {
-        return groupService.saveGroup(group);
+    @Operation(summary = "update a group by id")
+    @PutMapping("/{id}")
+    public ResponseEntity<Group> updateGroup(@PathVariable("id") UUID id, @RequestBody @Valid Group group) throws InstanceNotFoundException {
+        return new ResponseEntity<>(groupService.updateGroup(id, group), HttpStatus.ACCEPTED);
     }
 
-    @PutMapping("/update/{id}")
-    @SneakyThrows
-    public void updateGroup(@PathVariable("id") UUID id, @RequestBody Group group) {
-        groupService.updateGroup(id, group);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteGroup(@PathVariable("id") UUID id) {
+    @Operation(summary = "delete a group by id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Group> deleteGroup(@PathVariable("id") UUID id) throws InstanceNotFoundException {
         groupService.deleteGroup(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    private MembersOfGroupDTO convertToDto(Group group) {
-        MembersOfGroupDTO membersOfGroupDTO = modelMapper.map(group, MembersOfGroupDTO.class);
-        membersOfGroupDTO.setId(group.getId());
-        membersOfGroupDTO.setGroupname(group.getGroupname());
-        membersOfGroupDTO.setMembers(group.getUsers());
-        return membersOfGroupDTO;
+    @ExceptionHandler(InstanceNotFoundException.class)
+    public ResponseEntity<String> handleInstanceNotFoundException(InstanceNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InstanceAlreadyExistsException.class)
+    public ResponseEntity<String> handleInstanceAlreadyExistsException(InstanceAlreadyExistsException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleMethodArgumentNotValidException() {
+        return new ResponseEntity<>("Validation of Entity stops you from doing this!", HttpStatus.BAD_REQUEST);
     }
 }
