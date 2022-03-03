@@ -58,13 +58,11 @@ public class RoleController {
         return new ResponseEntity<>(roleService.updateRole(id, role), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @ExceptionHandler(InstanceNotFoundException.class)
     public ResponseEntity<String> handleInstanceNotFoundException(InstanceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @ExceptionHandler(InstanceAlreadyExistsException.class)
     public ResponseEntity<String> handleInstanceAlreadyExistsException(InstanceAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

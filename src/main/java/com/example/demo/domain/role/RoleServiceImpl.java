@@ -1,6 +1,5 @@
 package com.example.demo.domain.role;
 
-import com.example.demo.domain.appUser.User;
 import com.example.demo.domain.authority.Authority;
 import com.example.demo.domain.authority.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +47,6 @@ public class RoleServiceImpl implements RoleService{
         if (!roleRepository.existsById(id)) throw new InstanceNotFoundException("Role does not exist.");
 
         newRole.setId(id);
-        roleRepository.deleteById(id);
         return roleRepository.save(newRole);
     }
 
