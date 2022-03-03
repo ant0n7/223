@@ -2,7 +2,6 @@ package com.example.demo.domain.appuser;
 
 
 import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
-import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.security.SecurityService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ public class UserController {
     @Operation(summary = "Save a single user.", description = "Save a single user to the database. The API automatically encrypts the password with BCrypt and generates an UUID.")
     @PostMapping("/")
     public ResponseEntity<User> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Single User object") @Valid @RequestBody User user)
-            throws InstanceAlreadyExistsException, InvalidEmailException {
+            throws InstanceAlreadyExistsException {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
@@ -113,10 +112,5 @@ public class UserController {
     @ExceptionHandler(InstanceAlreadyExistsException.class)
     public ResponseEntity<String> handleInstanceAlreadyExistsException(InstanceAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
-
-    @ExceptionHandler(InvalidEmailException.class)
-    public ResponseEntity<String> handleInvalidEmailException(InvalidEmailException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }

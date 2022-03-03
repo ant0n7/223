@@ -3,7 +3,6 @@ package com.example.demo.domain.appuser;
 import com.example.demo.DtoConverter;
 import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.group.GroupRepository;
-import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -67,12 +66,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public User saveUser(User user) throws InstanceAlreadyExistsException {
         if (userRepository.findByUsername(user.getUsername()) != null || userRepository.findByEmail(user.getEmail()) != null){
             throw new InstanceAlreadyExistsException("Username or Email already exists");
-        }
-        if (userRepository.findByEmail(user.getEmail()) != null) {
-            throw new InvalidEmailException("Email is invalid");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
