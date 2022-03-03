@@ -1,12 +1,9 @@
 package com.example.demo.domain.role;
 
-import com.example.demo.domain.appUser.User;
 import com.example.demo.domain.authority.Authority;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
