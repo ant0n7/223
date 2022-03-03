@@ -5,6 +5,19 @@ This spring boot API allows to work with following entities:
 * Roles
 * Authorities
 
+## Login
+There are two main Roles in this Application.
+* Admins
+* Default users
+### User Information
+| User          | Password                   | Role    |
+|:--------------|:---------------------------|:--------|
+| remo          | admin                      | ADMIN   |
+| anton         | admin                      | ADMIN   |
+| bob           | password                   | DEFAULT |
+
+
+
 Read the instructions to learn about more details how to setup the application.
 
 ## Instructions
