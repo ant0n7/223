@@ -1,6 +1,6 @@
 package com.example.demo.domain.group;
 
-import com.example.demo.domain.appUser.User;
+import com.example.demo.domain.appuser.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

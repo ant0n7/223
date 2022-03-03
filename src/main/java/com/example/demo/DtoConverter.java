@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.domain.appUser.User;
-import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.appuser.User;
+import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.group.Group;
 import com.example.demo.domain.group.dto.MembersOfGroupDTO;
 import lombok.RequiredArgsConstructor;

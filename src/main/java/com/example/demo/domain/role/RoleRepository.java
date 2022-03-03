@@ -11,5 +11,4 @@ public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     @Override
     Optional<Role> findById(UUID uuid);
-//    Role findById(UUID id);
 }

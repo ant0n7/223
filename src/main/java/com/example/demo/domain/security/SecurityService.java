@@ -1,6 +1,6 @@
 package com.example.demo.domain.security;
 
-import com.example.demo.domain.appUser.User;
+import com.example.demo.domain.appuser.User;
 import com.example.demo.domain.group.GroupRepository;
 import com.example.demo.domain.group.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;

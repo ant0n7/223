@@ -1,10 +1,8 @@
-package com.example.demo.domain.appUser;
+package com.example.demo.domain.appuser;
 
 
-import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
-import com.example.demo.domain.exceptions.InvalidEmailException;
+import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.role.Role;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -14,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException;
+    User saveUser(User user) throws InstanceAlreadyExistsException;
     Role saveRole(Role role);
     void addRoleToUser(String username, String rolename);
     User getUser(String username);
