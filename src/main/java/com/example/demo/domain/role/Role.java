@@ -4,6 +4,8 @@ import com.example.demo.domain.authority.Authority;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +19,9 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Size(min = 3, max = 16)
+    @NotNull
     @Column(nullable = false)
     private String name;
 
