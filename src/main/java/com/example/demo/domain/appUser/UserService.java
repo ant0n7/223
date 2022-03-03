@@ -21,4 +21,6 @@ public interface UserService {
     Optional<User> findById(UUID id) throws InstanceNotFoundException;
     List<User> findAll();
     List<UserSmallDetailsDTO> getUsersOfGroup(String groupname, Pageable pageable) throws InstanceNotFoundException;
+    User updateUser(UUID id, User user) throws InstanceNotFoundException;
+    void deleteUser(UUID id) throws InstanceNotFoundException;
 }
