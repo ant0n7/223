@@ -1,10 +1,13 @@
 package com.example.demo.domain.group;
 
+import com.example.demo.domain.security.SecurityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,34 +21,41 @@ import java.util.*;
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
+    @Autowired
+    private final SecurityService securityService;
 
-    @Operation(summary = "Get all Groups")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Get all Groups", description = "Get a list of all groups with all their information")
     @GetMapping("/")
     public ResponseEntity<Collection<Group>> findAll() {
         return new ResponseEntity<>(groupService.findAll(), HttpStatus.FOUND);
     }
 
-    @Operation(summary = "Get a group by ID")
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
+    @Operation(summary = "Get a group by ID.", description = "Receive a single group with all available Information by its UUID.")
     @GetMapping("/{id}")
-    public ResponseEntity<Group> getGroupById(@PathVariable("id") UUID id) throws InstanceAlreadyExistsException, InstanceNotFoundException {
-        return new ResponseEntity<>(groupService.findById(id).get(), HttpStatus.FOUND);
+    public ResponseEntity<Group> getGroupById(@Parameter(description = "UUID of the group requested")@PathVariable("id") UUID id) throws InstanceAlreadyExistsException, InstanceNotFoundException {
+        return new ResponseEntity<>(groupService.findById(id).orElse(null), HttpStatus.FOUND);
     }
 
-    @Operation(summary = "Add a group")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Save a single group.", description = "Save a single group to the database.")
     @PostMapping("/")
-    public ResponseEntity<Group> addGroup(@RequestBody @Valid Group group) throws InstanceAlreadyExistsException {
+    public ResponseEntity<Group> addGroup(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Single Group object") @RequestBody @Valid Group group) throws InstanceAlreadyExistsException {
         return new ResponseEntity<>(groupService.saveGroup(group), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "update a group by id")
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
+    @Operation(summary = "update a group by id.", description = "Updates a single group by sending a requestbody and overwriting old data with new data")
     @PutMapping("/{id}")
-    public ResponseEntity<Group> updateGroup(@PathVariable("id") UUID id, @RequestBody @Valid Group group) throws InstanceNotFoundException {
+    public ResponseEntity<Group> updateGroup(@Parameter(description = "UUID of the group requested")@PathVariable("id") UUID id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Single Group object") @RequestBody @Valid Group group) throws InstanceNotFoundException {
         return new ResponseEntity<>(groupService.updateGroup(id, group), HttpStatus.ACCEPTED);
     }
 
-    @Operation(summary = "delete a group by id")
+    @PreAuthorize("@securityService.isMember(#id, authentication.principal.username) || hasRole('ADMIN')")
+    @Operation(summary = "delete a group by id.", description = "deletes the group matching the id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Group> deleteGroup(@PathVariable("id") UUID id) throws InstanceNotFoundException {
+    public ResponseEntity<Group> deleteGroup(@Parameter(description = "finds a group matching the UUID and deletes the group")@PathVariable("id") UUID id) throws InstanceNotFoundException {
         groupService.deleteGroup(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

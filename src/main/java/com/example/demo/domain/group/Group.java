@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,7 +22,8 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull (message = "groupname is mandatory")
+    @Size(min = 3, max = 16)
+    @NotNull(message = "Groupname is mandatory.")
     private String groupname;
 
     private String motto;
