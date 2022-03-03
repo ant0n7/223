@@ -50,7 +50,7 @@ public class UserController {
         return new ResponseEntity<>(userService.saveRole(role), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("#username == authentication.principal.username || hasRole('ADMIN')")
     @Operation(summary = "Get an user by username.", description = "Receive a single user with all available Information by its username.")
     @GetMapping("/{username}")
     public ResponseEntity<User> getByUsername(@Parameter(name = "Username", description = "Unique username of the user requested") @PathVariable String username) {

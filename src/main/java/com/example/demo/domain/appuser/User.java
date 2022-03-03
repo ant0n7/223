@@ -13,7 +13,6 @@ import java.util.UUID;
 @Getter@Setter
 @NoArgsConstructor @AllArgsConstructor
 public class User {
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
