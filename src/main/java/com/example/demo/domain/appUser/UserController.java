@@ -4,12 +4,15 @@ package com.example.demo.domain.appUser;
 import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
+import com.example.demo.domain.security.SecurityService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -23,6 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    @Autowired
+    private SecurityService securityService;
 
     @Operation(summary = "List of all users.", description = "Get a list of all users with all their information.")
     @GetMapping("/")
@@ -48,6 +53,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getUser(username), HttpStatus.OK);
     }
 
+    @PreAuthorize("@securityService.isMember(#groupname, authentication.principal.username) || hasRole('ADMIN')")
     @Operation(summary = "Get all users of a specific group.", description = "Receive all users which are member of the given group in an array. The response may not contain all information about the user.")
     @GetMapping("/groups/{groupname}")
     public ResponseEntity<Collection<UserSmallDetailsDTO>> getUsersOfGroup(@Parameter(description = "Unique name of the group requested")@PathVariable String groupname) throws InstanceNotFoundException {
