@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "tbl_role")
 //#from lombok
 @Getter
 @Setter
@@ -28,6 +28,7 @@ public class Role {
     @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
+            name = "tbl_role_authorities",
             joinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(

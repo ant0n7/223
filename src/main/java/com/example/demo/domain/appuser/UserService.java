@@ -1,10 +1,9 @@
-package com.example.demo.domain.appUser;
+package com.example.demo.domain.appuser;
 
 
-import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.management.InstanceAlreadyExistsException;

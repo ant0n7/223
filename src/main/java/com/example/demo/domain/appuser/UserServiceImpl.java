@@ -1,7 +1,7 @@
-package com.example.demo.domain.appUser;
+package com.example.demo.domain.appuser;
 
 import com.example.demo.DtoConverter;
-import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import com.example.demo.domain.group.GroupRepository;
 import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;

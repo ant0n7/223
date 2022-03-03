@@ -1,7 +1,6 @@
-package com.example.demo.domain.appUser;
+package com.example.demo.domain.appuser;
 
 import com.example.demo.domain.role.Role;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +8,7 @@ import javax.validation.constraints.*;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity(name="users")
+@Entity(name="tbl_user")
 //from lombok
 @Getter@Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -28,7 +27,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
+            name = "tbl_user_role",
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
