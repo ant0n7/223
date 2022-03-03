@@ -45,17 +45,16 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void updateRole(UUID id, Role newRole) throws InstanceNotFoundException {
-//        Role role = roleRepository.findById(id);
-//        if ((role = roleRepository.getById(id)) == null) {
-//            throw new InstanceNotFoundException("Role does not exist.");
-//        }
-//
-//        role = newRole;
-//        role.setId(id);
+    public Role updateRole(UUID id, Role newRole) throws InstanceNotFoundException {
+        if (!roleRepository.existsById(id)) throw new InstanceNotFoundException("Role does not exist.");
+
+        newRole.setId(id);
+        roleRepository.deleteById(id);
+        return roleRepository.save(newRole);
     }
 
     public void deleteRole(UUID id) throws InstanceNotFoundException {
+        if (!roleRepository.existsById(id)) throw new InstanceNotFoundException("Role does not exist.");
         roleRepository.deleteById(id);
     }
 }

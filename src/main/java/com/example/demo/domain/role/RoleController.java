@@ -39,9 +39,8 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable UUID id, @Valid @RequestBody Role role) throws InstanceNotFoundException {
-        roleService.updateRole(id, role);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Role> update(@PathVariable UUID id, @Valid @RequestBody Role role) throws InstanceNotFoundException {
+        return new ResponseEntity<>(roleService.updateRole(id, role), HttpStatus.OK);
     }
 
     @ExceptionHandler(InstanceNotFoundException.class)

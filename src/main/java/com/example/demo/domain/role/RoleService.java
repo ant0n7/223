@@ -10,6 +10,6 @@ public interface RoleService {
     List<Role> findAll();
     Role saveRole(Role role) throws InstanceAlreadyExistsException;
     Role getRoleById(UUID id);
-    void updateRole(UUID id, Role role) throws InstanceNotFoundException;
+    Role updateRole(UUID id, Role role) throws InstanceNotFoundException;
     void deleteRole(UUID id) throws InstanceNotFoundException;
 }
