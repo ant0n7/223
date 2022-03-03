@@ -1,6 +1,6 @@
 package com.example.demo.domain.group.dto;
 
-import com.example.demo.domain.appUser.dto.UserSmallDetailsDTO;
+import com.example.demo.domain.appuser.dto.UserSmallDetailsDTO;
 import lombok.Getter;
 import lombok.Setter;
 
