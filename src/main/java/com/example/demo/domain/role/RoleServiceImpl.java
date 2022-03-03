@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Transactional
 @Service
 public class RoleServiceImpl implements RoleService{
     @Autowired

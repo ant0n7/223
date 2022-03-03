@@ -25,9 +25,22 @@ insert into tbl_user (id, username, email, password) values ('7c2e1f3e-d9d1-4e7a
 insert into tbl_user (id, username, email, password) values ('2f311e0a-e539-4d45-acd0-95b86fe17d1e', 'lrandales9', 'dsanday9@gov.uk', '$2a$10$M4RMvNN.WPHgc8DYy788HuMwR1Mu4H2AwMU0A6Njbc4Qv8IDSSVq6');
 insert into tbl_user (id, username, email, password) values ('e74d2176-e7d7-4003-8543-369057a4279e', 'remo', 'remo@admin.com', '$2a$10$pSRN6DPaV8zMl0mop.xK0ev.DC8ukengwqhIEDRSz0wODLX2uiVOK');
 insert into tbl_user (id, username, email, password) values ('2c61dac7-29fa-4baa-95e5-9053c7879d41', 'anton', 'anton@admin.com', '$2a$10$pSRN6DPaV8zMl0mop.xK0ev.DC8ukengwqhIEDRSz0wODLX2uiVOK');
+insert into tbl_user (id, username, email, password) values ('9da0c2ba-98c5-4504-821a-259942a298b2', 'bob', 'bob@user.com', '$2a$10$M4RMvNN.WPHgc8DYy788HuMwR1Mu4H2AwMU0A6Njbc4Qv8IDSSVq6');
 
 insert into tbl_user_role (user_id, role_id) values ('e74d2176-e7d7-4003-8543-369057a4279e', '0629910c-f847-4672-a11c-a80718f18026');
 insert into tbl_user_role (user_id, role_id) values ('2c61dac7-29fa-4baa-95e5-9053c7879d41', '0629910c-f847-4672-a11c-a80718f18026');
+
+insert into tbl_user_role (user_id, role_id) values ('621334c0-c9c2-4e50-9b9a-50e0b86c8ef8', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('5a04f167-4435-4cc5-9a4d-3b44f3a8b1e9', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('67916d13-fb3d-42cc-8073-444a0fdcd816', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('a89de9cf-92cd-4113-92ac-5488297e85d1', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('1978282b-63cb-4335-b3cf-b06a9e0cb27d', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('59037d10-5693-49e8-b7da-8bc27943b809', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('58012c35-a241-493e-941a-17fa569ed06e', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('9349f52a-3404-45be-840e-c4ae50bfa15c', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('7c2e1f3e-d9d1-4e7a-803e-6e36653146e2', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('2f311e0a-e539-4d45-acd0-95b86fe17d1e', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
+insert into tbl_user_role (user_id, role_id) values ('9da0c2ba-98c5-4504-821a-259942a298b2', '2f1e573f-6290-4581-b54b-7e3ba2c98832');
 
 insert into tbl_group (id, groupname, motto) values ('03537b4a-a306-4420-98e6-a7b2f553f9cb', 'Fiveclub', 'nibh quisque id justo sit amet');
 insert into tbl_group (id, groupname, motto) values ('bfa5b4aa-7366-4ec9-9c0d-9dd5c2ab0484', 'Zooxo', 'at nunc commodo placerat');

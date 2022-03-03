@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "tbl_role")
-//#from lombok
 @Getter
 @Setter
 @AllArgsConstructor
