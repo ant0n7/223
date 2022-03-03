@@ -40,7 +40,7 @@ The log can be accessed via [logs/application.log](logs/application.log).
 ### Endpoints
 All endpoints are documented with **Swagger**.
 To view this documentation go to 
-[http://localhost:8080/swagger-ui/index.html#](http://localhost:8080/swagger-ui/index.html#). No credentials needed.
+[http://localhost:8080/swagger-ui/index.html#](http://localhost:8080/swagger-ui/index.html#).
 
 ### Properties
 Properties of this application are defined in [application.properties](src/main/resources/application.properties).
