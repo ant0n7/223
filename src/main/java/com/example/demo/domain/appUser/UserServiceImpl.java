@@ -7,7 +7,6 @@ import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -124,7 +123,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Override
+    public User updateUser(UUID id, User user) throws InstanceNotFoundException {
+        if (!userRepository.existsById(id)) throw new InstanceNotFoundException("User does not exist.");
 
+        user.setId(id);
+        return userRepository.save(user);
+    }
 
-
+    @Override
+    public void deleteUser(UUID id) throws InstanceNotFoundException {
+        if (!userRepository.existsById(id)) throw new InstanceNotFoundException("User does not exist.");
+        userRepository.deleteById(id);
+    }
 }
