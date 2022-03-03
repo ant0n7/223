@@ -13,8 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
- @EnableWebSecurity @RequiredArgsConstructor @EnableGlobalMethodSecurity(prePostEnabled = true)
-
+ @EnableWebSecurity @RequiredArgsConstructor @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
  public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
      private final UserDetailsService userDetailsService;
@@ -39,6 +38,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
          http.httpBasic().and()
                 .authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
+                 .antMatchers("/api/groups/**").permitAll()
+                 .antMatchers("/api/users/**").permitAll()
                 .antMatchers("/**").hasRole("ADMIN")
                 .and()
                 // some more method calls

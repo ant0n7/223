@@ -11,6 +11,7 @@ insert into role_authorities (role_id, authority_id) values ('0629910c-f847-4672
 insert into role_authorities (role_id, authority_id) values ('0629910c-f847-4672-a11c-a80718f18026', 'dc1cb5ac-e142-4b6a-aa87-ce509cc7b5f0');
 insert into role_authorities (role_id, authority_id) values ('0629910c-f847-4672-a11c-a80718f18026', 'a0f02331-1baa-4428-984b-5cd4328f6f7b');
 insert into role_authorities (role_id, authority_id) values ('0629910c-f847-4672-a11c-a80718f18026', 'c02e84f2-f069-483a-bd47-85833e7d1334');
+insert into role_authorities (role_id, authority_id) values ('2f1e573f-6290-4581-b54b-7e3ba2c98832', 'aebe836e-83a6-4be7-84c5-1eda33a933fe');
 
 insert into users (id, username, email, password) values ('621334c0-c9c2-4e50-9b9a-50e0b86c8ef8', 'rtrapp0', 'mshew0@omniture.com', '$2a$10$M4RMvNN.WPHgc8DYy788HuMwR1Mu4H2AwMU0A6Njbc4Qv8IDSSVq6');
 insert into users (id, username, email, password) values ('5a04f167-4435-4cc5-9a4d-3b44f3a8b1e9', 'fiwaszkiewicz1', 'staborre1@miitbeian.gov.cn', '$2a$10$M4RMvNN.WPHgc8DYy788HuMwR1Mu4H2AwMU0A6Njbc4Qv8IDSSVq6');
