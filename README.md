@@ -5,6 +5,19 @@ This spring boot API allows to work with following entities:
 * Roles
 * Authorities
 
+## Login
+There are two main Roles in this Application.
+* Admins
+* Default users
+### User Information
+| User          | Password                   | Role    |
+|:--------------|:---------------------------|:--------|
+| remo          | admin                      | ADMIN   |
+| anton         | admin                      | ADMIN   |
+| bob           | password                   | DEFAULT |
+
+
+
 Read the instructions to learn about more details how to setup the application.
 
 ## Instructions
@@ -27,7 +40,7 @@ The log can be accessed via [logs/application.log](logs/application.log).
 ### Endpoints
 All endpoints are documented with **Swagger**.
 To view this documentation go to 
-[http://localhost:8080/swagger-ui/index.html#](http://localhost:8080/swagger-ui/index.html#). No credentials needed.
+[http://localhost:8080/swagger-ui/index.html#](http://localhost:8080/swagger-ui/index.html#).
 
 ### Properties
 Properties of this application are defined in [application.properties](src/main/resources/application.properties).

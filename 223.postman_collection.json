@@ -1,0 +1,614 @@
+{
+	"info": {
+		"_postman_id": "39b3976e-4d27-4392-9cd6-e6ffba033018",
+		"name": "223",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Endpoints",
+			"item": [
+				{
+					"name": "User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Saved user equals \\\"requestuser\\\"\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"user_id\", jsonData.id);\r",
+									"    pm.expect(jsonData.username).to.eql(\"requestuser\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"requestuser\",\r\n    \"email\": \"request@gmail.com\",\r\n    \"password\": \"request1\",\r\n    \"roles\": [\r\n        {\r\n            \"id\": \"2f1e573f-6290-4581-b54b-7e3ba2c98832\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{users_api}}/",
+							"host": [
+								"{{users_api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{users_api}}/byId/{{user_id}}",
+							"host": [
+								"{{users_api}}"
+							],
+							"path": [
+								"byId",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get members of group by groupname",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{users_api}}/groups/{{groupname}}",
+							"host": [
+								"{{users_api}}"
+							],
+							"path": [
+								"groups",
+								"{{groupname}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group Endpoints",
+			"item": [
+				{
+					"name": "Get all groups",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"(pm.response.code == (404) ? pm.test.skip : pm.test)(\"Groups were found\", function() {\r",
+									"    pm.response.to.have.status(302);\r",
+									"});\r",
+									"\r",
+									"(pm.response.code == (302) ? pm.test.skip : pm.test)(\"Groups are empty\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{groups_api}}/",
+							"host": [
+								"{{groups_api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get group by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"group_id\", \"03537b4a-a306-4420-98e6-a7b2f553f9cb\");\r",
+									"\r",
+									"(pm.response.code == (404) ? pm.test.skip : pm.test)(\"Group was found\", function() {\r",
+									"    pm.response.to.have.status(302);\r",
+									"});\r",
+									"\r",
+									"(pm.response.code == (302) ? pm.test.skip : pm.test)(\"Group was not found\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{groups_api}}/{{group_id}}",
+							"host": [
+								"{{groups_api}}"
+							],
+							"path": [
+								"{{group_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save a group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"(pm.response.code == (409) ? pm.test.skip : pm.test)(\"Saved group equals \\\"POSTMAN_TEST\\\"\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"group_id\", jsonData.id);\r",
+									"    pm.expect(jsonData.groupname).to.eql(\"POSTMAN_TEST\");\r",
+									"});\r",
+									"\r",
+									"(pm.response.code == (409)? pm.test : pm.test.skip)(\"Group already exists\", function () {\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"groupname\": \"POSTMAN_TEST\",\r\n        \"motto\": \"postman\",\r\n        \"users\": []\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{groups_api}}/",
+							"host": [
+								"{{groups_api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update group by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update group name equals \\\"POSTMAN_UPDATED\\\"\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.motto).to.eql(\"POSTMAN_UPDATED\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"groupname\": \"POSTMAN_TEST\",\r\n    \"motto\": \"POSTMAN_UPDATED\",\r\n    \"users\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{groups_api}}/{{group_id}}",
+							"host": [
+								"{{groups_api}}"
+							],
+							"path": [
+								"{{group_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete group by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {\r",
+									"    pm.response.to.have.status(202);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if (pm.collectionVariables.get(\"variable_key\") == \"\") {\r",
+									"    pm.collectionVariables.set(\"groupID\", \"03537b4a-a306-4420-98e6-a7b2f553f9cb\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{groups_api}}/{{group_id}}",
+							"host": [
+								"{{groups_api}}"
+							],
+							"path": [
+								"{{group_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role Endpoints",
+			"item": [
+				{
+					"name": "Role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Saved role equals \\\"POSTMAN_TEST\\\"\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.collectionVariables.set(\"role_id\", jsonData.id);\r",
+									"    pm.expect(jsonData.name).to.eql(\"POSTMAN_TEST\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"POSTMAN_TEST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{roles_api}}/",
+							"host": [
+								"{{roles_api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Roles contain DEFAULT and ADMIN\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    // pm.expect(jsonData[0].name).to.eql(\"DEFAULT\");\r",
+									"    pm.expect(jsonData[0].name).to.be.oneOf([\"ADMIN\", \"DEFAULT\"]);\r",
+									"    pm.expect(jsonData[1].name).to.be.oneOf([\"ADMIN\", \"DEFAULT\"]);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{roles_api}}/",
+							"host": [
+								"{{roles_api}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Role by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"role_id\", \"0629910c-f847-4672-a11c-a80718f18026\");\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{roles_api}}/{{role_id}}",
+							"host": [
+								"{{roles_api}}"
+							],
+							"path": [
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Role by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Update role name equals \\\"POSTMAN_UPDATED\\\"\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql(\"POSTMAN_UPDATED\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"POSTMAN_UPDATED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{roles_api}}/{{role_id}}",
+							"host": [
+								"{{roles_api}}"
+							],
+							"path": [
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Role by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{roles_api}}/{{role_id}}",
+							"host": [
+								"{{roles_api}}"
+							],
+							"path": [
+								"{{role_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "anton",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "protocol",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "8080",
+			"type": "string"
+		},
+		{
+			"key": "fullhost",
+			"value": "{{protocol}}://{{host}}:{{port}}"
+		},
+		{
+			"key": "groups_api",
+			"value": "{{protocol}}://{{host}}:{{port}}/api/groups",
+			"type": "string"
+		},
+		{
+			"key": "group_id",
+			"value": "e11c08a8-0f34-4fc9-8aa0-bbb023f442e5",
+			"type": "string"
+		},
+		{
+			"key": "groupname",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "role_id",
+			"value": "c2d9bfc0-581f-4be6-bbfc-3ee9aa9b7462",
+			"type": "string"
+		},
+		{
+			"key": "roles_api",
+			"value": "{{protocol}}://{{host}}:{{port}}/api/roles",
+			"type": "string"
+		},
+		{
+			"key": "users_api",
+			"value": "{{protocol}}://{{host}}:{{port}}/api/users",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "0",
+			"type": "string"
+		}
+	]
+}
